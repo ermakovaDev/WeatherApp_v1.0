@@ -2,10 +2,12 @@ package me.chronick.weatherapp
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import me.chronick.weatherapp.adapters.WeatherModel
+import java.nio.file.WatchEvent
 
 class MainViewModel: ViewModel() {
 
-    val liveDataCurrent = MutableLiveData<String>()
-    val liveDataList = MutableLiveData<String>()
+    val liveDataCurrent = MutableLiveData<WeatherModel>()
+    val liveDataList = MutableLiveData<WeatherModel>()
 
 }

@@ -1,6 +1,6 @@
-package me.chronick.weatherapp
+package me.chronick.weatherapp.adapters
 
-data class DayItem(
+data class WeatherModel(
     val cityName: String,
     val dataTime: String,
     val condition: String,
@@ -10,4 +10,4 @@ data class DayItem(
     val temperMin: String,
     val hoursToDay: String,
     val imageUrl: String
-    )
+)
