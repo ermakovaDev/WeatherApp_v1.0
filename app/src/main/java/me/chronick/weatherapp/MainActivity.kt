@@ -8,6 +8,7 @@ import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import me.chronick.weatherapp.databinding.ActivityMainBinding
+import me.chronick.weatherapp.fragments.MainFragment
 import org.json.JSONObject
 
 const val API_WEATHER_KEY = "a9194f5b279d4301b5c93017220706"
@@ -22,10 +23,11 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.btnResult.setOnClickListener {
-            val text = binding.etCity.text.toString()
-            getResult(text)
-        }
+        supportFragmentManager
+            .beginTransaction()
+            .replace(binding.clPlaceHolder.id, MainFragment.newInstance())
+            .commit()
+
     }
 
     private fun getResult(name: String) {
