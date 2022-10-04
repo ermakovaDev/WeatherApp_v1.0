@@ -7,15 +7,175 @@
     android:layout_height="match_parent"
     tools:context=".fragments.MainFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/tvTextFragment"
+    <ImageView
+        android:id="@+id/ivBackground"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_blank_fragment"
+        android:alpha="0.7"
+        android:contentDescription="@string/background"
+        android:scaleType="fitXY"
+        android:src="@drawable/phone_background_weatherapp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardviewHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:backgroundTint="@color/card_bg_gray"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clCardHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/card_bg_gray"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/tvCardHeadeData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:padding="10dp"
+                android:textColor="#D7CCC8"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="20/07/2022 15:00" />
+
+            <ImageView
+                android:id="@+id/ivCardHeaderPicture"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:contentDescription="@string/citypicture"
+                android:src="@drawable/ic_launcher_foreground"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvCardHeaderCity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ivCardHeaderPicture"
+                tools:text="@string/city" />
+
+            <TextView
+                android:id="@+id/tvCardHeaderCurrentTemper"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/roboto"
+                android:textColor="@color/white"
+                android:textSize="50sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvCardHeaderCity"
+                tools:text="20 C" />
+
+            <TextView
+                android:id="@+id/tvCardHeaderClima"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/roboto"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvCardHeaderCurrentTemper"
+                tools:text="Sunny" />
+
+            <TextView
+                android:id="@+id/tvCardHeaderTemperMinMax"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/roboto"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvCardHeaderClima"
+                tools:text="19C / 22C" />
+
+            <ImageButton
+                android:id="@+id/ibCardHeaderSearchIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:contentDescription="@string/search"
+                android:minWidth="48dp"
+                android:minHeight="48dp"
+                android:src="@drawable/ic_baseline_search_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvCardHeaderClima" />
+
+            <ImageButton
+                android:id="@+id/ibCardHeaderUpdateIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:contentDescription="@string/updateicon"
+                android:minWidth="48dp"
+                android:minHeight="48dp"
+                android:src="@drawable/ic_baseline_cloud_sync_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvCardHeaderClima" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tablayoutBody"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:backgroundTint="@color/card_bg_gray"
+        android:padding="5dp"
+        app:layout_constraintEnd_toEndOf="@+id/cardviewHeader"
+        app:layout_constraintStart_toStartOf="@+id/cardviewHeader"
+        app:layout_constraintTop_toBottomOf="@+id/cardviewHeader"
+        app:tabBackground="@null"
+        app:tabIndicatorColor="@color/teal_700"
+        app:tabTextColor="@color/white">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hours" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/days" />
+
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vp2Footer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/cardviewHeader"
+        app:layout_constraintStart_toStartOf="@+id/cardviewHeader"
+        app:layout_constraintTop_toBottomOf="@+id/tablayoutBody" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

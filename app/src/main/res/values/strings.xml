@@ -5,4 +5,11 @@
     <string name="write_the_city">Write the city</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="city">CITY</string>
+    <string name="search">search</string>
+    <string name="updateicon">updateIcon</string>
+    <string name="citypicture">cityPicture</string>
+    <string name="background">background</string>
+    <string name="hours">hours</string>
+    <string name="days">days</string>
 </resources>
