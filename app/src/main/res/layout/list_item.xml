@@ -20,6 +20,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:text="Lunes 04/10/2022"
+            android:textColor="#212121"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,22 +33,23 @@
             android:layout_marginBottom="1dp"
             android:fontFamily="@font/roboto"
             android:text="Sunny"
-            android:textColor="@color/white"
+            android:textColor="#212121"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvDateTime" />
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/ivCityImage"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:contentDescription="@string/citypicture"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_launcher_foreground" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/tvTemper"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:fontFamily="@font/roboto"
@@ -56,7 +58,7 @@
             android:textColor="@color/white"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/imageView"
+            app:layout_constraintEnd_toStartOf="@+id/ivCityImage"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toEndOf="@+id/tvDateTime"
             app:layout_constraintTop_toTopOf="parent" />
