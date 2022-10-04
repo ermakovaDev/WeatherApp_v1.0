@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <!--
+    You declare a need for foreground location when your app requests either
+    the ACCESS_COARSE_LOCATION permission or the ACCESS_FINE_LOCATION permission, as shown in the following snippet:
+    -> Always include this permission android.permission.ACCESS_COARSE_LOCATION
+    -> Include only if your app benefits from precise location access android.permission.ACCESS_FINE_LOCATION
+    -->
 
     <application
         android:allowBackup="true"
@@ -17,7 +25,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
 
-        <!--    android:usesCleartextTraffic="true"  // HTTP with clear text is TRUE -->
+        <!--
+        android:usesCleartextTraffic="true"  // HTTP with clear text is TRUE
+        -->
 
         <activity
             android:name=".MainActivity"
