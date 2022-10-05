@@ -7,7 +7,7 @@ import java.nio.file.WatchEvent
 
 class MainViewModel: ViewModel() {
 
-    val liveDataCurrent = MutableLiveData<WeatherModel>()
-    val liveDataList = MutableLiveData<WeatherModel>()
+    val liveDataCurrent = MutableLiveData<WeatherModel>()  // transfer parseCurrentData
+    val liveDataList = MutableLiveData<WeatherModel>() // transfer     val listDays = parseDaysWeatherData(myObject)
 
 }
