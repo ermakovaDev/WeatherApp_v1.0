@@ -2,7 +2,6 @@ package me.chronick.weatherapp.fragments
 
 import android.Manifest
 import android.os.Bundle
-import android.provider.Contacts.SettingsColumns.KEY
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -17,7 +16,9 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.tabs.TabLayoutMediator
 import me.chronick.weatherapp.adapters.ViewPageAdapter
+import me.chronick.weatherapp.adapters.WeatherModel
 import me.chronick.weatherapp.databinding.FragmentMainBinding
+import org.json.JSONObject
 
 const val API_WEATHER_KEY = "a9194f5b279d4301b5c93017220706"
 
@@ -75,12 +76,32 @@ class MainFragment : Fragment() {
         val url =
             "https://api.weatherapi.com/v1/forecast.json?key=$API_WEATHER_KEY&q=$cityName&days=3&aqi=no&alerts=no"
         val queue = Volley.newRequestQueue(context)
-        val request = StringRequest(Request.Method.GET, url, { result ->
+        val request = StringRequest(Request.Method.GET, url, { result -> parseWeatherData(result)
             Log.d("MyLog", "Result: $result")
         }, { error ->
             Log.d("MyLog", "Error: $error")
         })
         queue.add(request)
+    }
+
+    private fun parseWeatherData(jsonWithAPIKey: String) {
+        val myObject = JSONObject(jsonWithAPIKey)
+        val item = WeatherModel(
+            myObject.getJSONObject("location").getString("name"),
+            myObject.getJSONObject("current").getString("last_updated"),
+            myObject.getJSONObject("current").getJSONObject("condition").getString("text"),
+            myObject.getJSONObject("current").getJSONObject("condition").getString("icon"),
+            myObject.getJSONObject("current").getString("temp_c"),
+            "",
+            "",
+            ""
+        )
+
+        Log.d("MyLog", "City: ${item.cityName}")
+        Log.d("MyLog", "Time: ${item.dataTime}")
+        Log.d("MyLog", "Condition: ${item.condition}")
+        Log.d("MyLog", "Temp: ${item.currentTemper}")
+        Log.d("MyLog", "Image URL: ${item.imageURL}")
     }
 
     companion object {
