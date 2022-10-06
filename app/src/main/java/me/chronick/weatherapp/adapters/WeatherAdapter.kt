@@ -14,17 +14,23 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
-class WeatherAdapter: ListAdapter<WeatherModel, WeatherAdapter.Holder>(Comparator()) {
+class WeatherAdapter(private val listener: Listener?): ListAdapter<WeatherModel, WeatherAdapter.Holder>(Comparator()) {
 
-    class Holder(view: View) : RecyclerView.ViewHolder(view){ // creating pattern markup
+    class Holder(view: View, private val listener: Listener?) : RecyclerView.ViewHolder(view){ // creating pattern markup
+
         private val binding = ListItemBinding.bind(view)
+        private var itemTemp:WeatherModel? = null
+        init {
+            itemView.setOnClickListener { // all the markup of the dayItem in the body
+                itemTemp?.let { it1 -> listener?.onClick(it1) }
+            }
+        }
+
         @SuppressLint("SetTextI18n")
         fun bind(item: WeatherModel) = with(binding){
-            val current = item.dataTime
-            val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
-            val formatted = current.format(formatter)
+            itemTemp = item
 
-            tvDateTime.text = formatted
+            tvDateTime.text = item.dataTime
             tvCondition.text = item.condition
             if (item.currentTemper!=""){
                 tvTemper.text = item.currentTemper+"ºC"
@@ -43,12 +49,17 @@ class WeatherAdapter: ListAdapter<WeatherModel, WeatherAdapter.Holder>(Comparato
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder { // the number of views is created by the number of items in the list
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherAdapter.Holder { // the number of views is created by the number of items in the list
         val view = LayoutInflater.from(parent.context).inflate(R.layout.list_item, parent, false) // parent:ViewGroup contains context
-        return Holder(view)
+        return WeatherAdapter.Holder(view, listener)
     }
 
-    override fun onBindViewHolder(holder: Holder, position: Int) { // how to fill Holder (stores all references to positions) in and position
+    override fun onBindViewHolder(holder: WeatherAdapter.Holder, position: Int) { // how to fill Holder (stores all references to positions) in and position
         holder.bind(getItem(position))
+
+    }
+
+    interface Listener{ // interface for switching header day cards
+        fun onClick(item: WeatherModel)
     }
 }

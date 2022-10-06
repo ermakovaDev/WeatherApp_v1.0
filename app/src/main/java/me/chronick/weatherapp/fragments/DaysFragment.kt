@@ -11,10 +11,11 @@ import androidx.recyclerview.widget.ListAdapter
 import me.chronick.weatherapp.MainViewModel
 import me.chronick.weatherapp.R
 import me.chronick.weatherapp.adapters.WeatherAdapter
+import me.chronick.weatherapp.adapters.WeatherModel
 import me.chronick.weatherapp.databinding.FragmentDaysBinding
 import me.chronick.weatherapp.databinding.FragmentHoursBinding
 
-class DaysFragment : Fragment() {
+class DaysFragment : Fragment(), WeatherAdapter.Listener {
 
     private lateinit var binding: FragmentDaysBinding
     private lateinit var adapter: WeatherAdapter
@@ -36,17 +37,21 @@ class DaysFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initRCViewItemDays()
         model.liveDataList.observe(viewLifecycleOwner){
-            adapter.submitList(it.subList(1,it.size))
+            adapter.submitList(it)
         }
     }
 
     private fun initRCViewItemDays() = with(binding){
         rcViewItemDays.layoutManager = LinearLayoutManager(activity)
-        adapter = WeatherAdapter()
+        adapter = WeatherAdapter(this@DaysFragment)
         rcViewItemDays.adapter = adapter
     }
     companion object {
         @JvmStatic
         fun newInstance() = DaysFragment()
+    }
+
+    override fun onClick(item: WeatherModel) {
+        model.liveDataCurrent.value = item
     }
 }

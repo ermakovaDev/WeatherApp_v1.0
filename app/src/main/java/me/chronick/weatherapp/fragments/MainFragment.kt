@@ -1,7 +1,6 @@
 package me.chronick.weatherapp.fragments
 
 import android.Manifest
-import android.R.bool
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
@@ -24,6 +23,7 @@ import me.chronick.weatherapp.adapters.ViewPageAdapter
 import me.chronick.weatherapp.adapters.WeatherModel
 import me.chronick.weatherapp.databinding.FragmentMainBinding
 import org.json.JSONObject
+import java.time.format.DateTimeFormatter
 
 
 const val API_WEATHER_KEY = "a9194f5b279d4301b5c93017220706"
@@ -69,6 +69,7 @@ class MainFragment : Fragment() {
         }.attach()
     }
 
+
     @SuppressLint("SetTextI18n")
     private fun updateHeaderCurrentCard() = with(binding){ // add Observer, this is callback
         model.liveDataCurrent.observe(viewLifecycleOwner){ // == it ||  item->
@@ -76,8 +77,16 @@ class MainFragment : Fragment() {
             tvCardHeadeData.text = it.dataTime
             tvCardHeaderCity.text = it.cityName
             tvCardHeaderCurrentTemper.text = it.currentTemper+"ºC"
+
+            if (it.currentTemper!=""){
+                tvCardHeaderCurrentTemper.text = it.currentTemper+"ºC"
+                tvCardHeaderTemperMinMax.text = minMaxTemper
+            } else { tvCardHeaderCurrentTemper.text = minMaxTemper
+                tvCardHeaderTemperMinMax.text = "-"
+            }
+
+
             tvCardHeaderCondition.text = it.condition
-            tvCardHeaderTemperMinMax.text = minMaxTemper
             Picasso.get().load("https:"+it.imageURL).into(ivCardHeaderPicture)
         }
     }
@@ -114,6 +123,10 @@ class MainFragment : Fragment() {
         val listDays = parseDaysWeatherData(myObject)
         parseCurrentData(myObject, listDays[0]) // first item in listDays is today
     }
+    private fun getDataTimeFormat(item: String): String {
+        val formatter = DateTimeFormatter.ofPattern("kk:mm")
+        return item.format(formatter)
+    }
 
     private fun parseDaysWeatherData(myObject: JSONObject): List<WeatherModel> {
         val listItemDay = ArrayList<WeatherModel>()
@@ -127,8 +140,8 @@ class MainFragment : Fragment() {
                 oneDay.getJSONObject("day").getJSONObject("condition").getString("text"),
                 oneDay.getJSONObject("day").getJSONObject("condition").getString("icon"),
                 "",
-                oneDay.getJSONObject("day").getString("mintemp_c"),
-                oneDay.getJSONObject("day").getString("maxtemp_c"),
+                oneDay.getJSONObject("day").getString("mintemp_c").toFloat().toInt().toString(),
+                oneDay.getJSONObject("day").getString("maxtemp_c").toFloat().toInt().toString(),
                 oneDay.getJSONArray("hour").toString()
             )
             listItemDay.add(item)
@@ -143,7 +156,7 @@ class MainFragment : Fragment() {
             myObject.getJSONObject("current").getString("last_updated"),
             myObject.getJSONObject("current").getJSONObject("condition").getString("text"),
             myObject.getJSONObject("current").getJSONObject("condition").getString("icon"),
-            myObject.getJSONObject("current").getString("temp_c"),
+            myObject.getJSONObject("current").getString("temp_c").toFloat().toInt().toString(),
             weatherItem.temperMin,
             weatherItem.temperMax,
             weatherItem.hoursToDay
