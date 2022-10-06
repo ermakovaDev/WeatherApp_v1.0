@@ -47,7 +47,7 @@
                 android:padding="10dp"
                 android:text="20/07/2022 15:00"
                 android:textColor="#EFEBE9"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="20/07/2022 15:00" />
@@ -80,23 +80,23 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/roboto"
-                android:text="20 C"
+                android:text="20ºC"
                 android:textColor="@color/white"
                 android:textSize="50sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvCardHeaderCity"
-                tools:text="20 C" />
+                tools:text="20ºC" />
 
             <TextView
-                android:id="@+id/tvCardHeaderClima"
+                android:id="@+id/tvCardHeaderCondition"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/roboto"
                 android:text="Sunny"
                 android:textColor="@color/white"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvCardHeaderCurrentTemper"
@@ -108,12 +108,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/roboto"
-                android:text="19C / 22C"
+                android:text="19ºC / 22ºC"
                 android:textColor="@color/white"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvCardHeaderClima"
+                app:layout_constraintTop_toBottomOf="@+id/tvCardHeaderCondition"
                 tools:text="19C / 22C" />
 
             <ImageButton
@@ -127,7 +127,7 @@
                 android:src="@drawable/ic_baseline_search_24"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvCardHeaderClima" />
+                app:layout_constraintTop_toBottomOf="@+id/tvCardHeaderCondition" />
 
             <ImageButton
                 android:id="@+id/ibCardHeaderUpdateIcon"
@@ -140,7 +140,7 @@
                 android:src="@drawable/ic_baseline_cloud_sync_24"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvCardHeaderClima" />
+                app:layout_constraintTop_toBottomOf="@+id/tvCardHeaderCondition" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

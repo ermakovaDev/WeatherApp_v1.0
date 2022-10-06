@@ -1,6 +1,7 @@
 package me.chronick.weatherapp.fragments
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -11,10 +12,13 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.activityViewModels
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.tabs.TabLayoutMediator
+import com.squareup.picasso.Picasso
+import me.chronick.weatherapp.MainViewModel
 import me.chronick.weatherapp.adapters.ViewPageAdapter
 import me.chronick.weatherapp.adapters.WeatherModel
 import me.chronick.weatherapp.databinding.FragmentMainBinding
@@ -35,6 +39,8 @@ class MainFragment : Fragment() {
         "Days"
     )
 
+    private val model: MainViewModel by activityViewModels()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,6 +54,7 @@ class MainFragment : Fragment() {
         checkPermission()
         initFragment()
         requestWeatherData("Canberra")
+        updateHeaderCurrentCard()
     }
 
     private fun initFragment() = with(binding) { // directly from the markup
@@ -56,6 +63,20 @@ class MainFragment : Fragment() {
         TabLayoutMediator(tablayoutBody, vp2Footer) { tab, position ->
             tab.text = tabList[position]
         }.attach()
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun updateHeaderCurrentCard() = with(binding){ // add Observer, this is callback
+        model.liveDataCurrent.observe(viewLifecycleOwner){ // == it ||  item->
+            val minMaxTemper = "${it.temperMin}ºC / ${it.temperMax}ºC"
+            tvCardHeadeData.text = it.dataTime
+            tvCardHeaderCity.text = it.cityName
+            tvCardHeaderCurrentTemper.text = it.currentTemper+"ºC"
+            tvCardHeaderCondition.text = it.condition
+            tvCardHeaderTemperMinMax.text = minMaxTemper
+            Picasso.get().load("https:"+it.imageURL).into(ivCardHeaderPicture)
+
+        }
     }
 
     private fun permissionListener() { // initialize Launcher. gave or did not give permission
@@ -123,7 +144,7 @@ class MainFragment : Fragment() {
             weatherItem.temperMax,
             weatherItem.hoursToDay
         )
-
+        model.liveDataCurrent.value = item
         Log.d("MyLog", "City: ${item.cityName}")
         Log.d("MyLog", "Time: ${item.dataTime}")
         Log.d("MyLog", "Condition: ${item.condition}")
