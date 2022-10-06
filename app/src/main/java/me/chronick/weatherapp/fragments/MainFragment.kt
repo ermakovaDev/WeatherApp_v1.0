@@ -2,8 +2,12 @@ package me.chronick.weatherapp.fragments
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.LocationManager
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -24,6 +28,7 @@ import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.material.tabs.TabLayoutMediator
 import com.squareup.picasso.Picasso
+import me.chronick.weatherapp.DialogManager
 import me.chronick.weatherapp.MainViewModel
 import me.chronick.weatherapp.adapters.ViewPageAdapter
 import me.chronick.weatherapp.adapters.WeatherModel
@@ -66,6 +71,11 @@ class MainFragment : Fragment() {
         getLocation()
     }
 
+    override fun onResume() {
+        super.onResume()
+        checkLocation()
+    }
+
     private fun initFragment() = with(binding) { // directly from the markup
         fLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
         val adapter = ViewPageAdapter(activity as FragmentActivity, fragmentList)
@@ -76,11 +86,33 @@ class MainFragment : Fragment() {
 
         ibCardHeaderUpdateIcon.setOnClickListener{
             tablayoutBody.selectTab(tablayoutBody.getTabAt(0))
-            getLocation()
+            checkLocation()
         }
     }
 
+    private fun checkLocation(){
+        if(isLocationEnabled()){
+            getLocation()
+        } else{
+            DialogManager.locationSettingsDialog(requireContext(),object :DialogManager.Listener{
+                override fun onClick() {
+                    startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+                }
+            })
+        }
+    }
+
+    private fun isLocationEnabled() : Boolean{
+        val locationManager = activity?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return  locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+
+    }
+
     private fun getLocation() {
+        if (!isLocationEnabled()){
+            Toast.makeText(requireContext(), "location disabled!", Toast.LENGTH_SHORT).show()
+            return
+        }
         val cancelToken = CancellationTokenSource()
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),
@@ -151,11 +183,6 @@ class MainFragment : Fragment() {
         val myObject = JSONObject(jsonWithAPIKey)
         val listDays = parseDaysWeatherData(myObject)
         parseCurrentData(myObject, listDays[0]) // first item in listDays is today
-    }
-
-    private fun getDataTimeFormat(item: String): String {
-        val formatter = DateTimeFormatter.ofPattern("kk:mm")
-        return item.format(formatter)
     }
 
     private fun parseDaysWeatherData(myObject: JSONObject): List<WeatherModel> {
