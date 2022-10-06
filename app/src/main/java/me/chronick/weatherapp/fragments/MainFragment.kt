@@ -2,6 +2,7 @@ package me.chronick.weatherapp.fragments
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,12 +11,17 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.activityViewModels
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
+import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.material.tabs.TabLayoutMediator
 import com.squareup.picasso.Picasso
 import me.chronick.weatherapp.MainViewModel
@@ -29,7 +35,7 @@ import java.time.format.DateTimeFormatter
 const val API_WEATHER_KEY = "a9194f5b279d4301b5c93017220706"
 
 class MainFragment : Fragment() {
-
+    private lateinit var fLocationClient: FusedLocationProviderClient
     private lateinit var permissionLauncher: ActivityResultLauncher<String>
     private lateinit var binding: FragmentMainBinding
     private val fragmentList = listOf(
@@ -52,42 +58,69 @@ class MainFragment : Fragment() {
     }
 
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) { //validate permission
         super.onViewCreated(view, savedInstanceState)
         checkPermission()
         initFragment()
-        requestWeatherData("Canberra")
         updateHeaderCurrentCard()
+        getLocation()
     }
 
     private fun initFragment() = with(binding) { // directly from the markup
+        fLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
         val adapter = ViewPageAdapter(activity as FragmentActivity, fragmentList)
         vp2Footer.adapter = adapter
         TabLayoutMediator(tablayoutBody, vp2Footer) { tab, position ->
             tab.text = tabList[position]
         }.attach()
+
+        ibCardHeaderUpdateIcon.setOnClickListener{
+            tablayoutBody.selectTab(tablayoutBody.getTabAt(0))
+            getLocation()
+        }
     }
 
 
+
+    private fun getLocation() {
+        val cancelToken = CancellationTokenSource()
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        } //SIC! https://stackoverflow.com/questions/66489605/is-constructor-locationrequest-deprecated-in-google-maps-v2
+        fLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, cancelToken.token).addOnCompleteListener {
+            requestWeatherData("${it.result.latitude},${it.result.longitude}")
+        }
+    }
+
+
+
+
     @SuppressLint("SetTextI18n")
-    private fun updateHeaderCurrentCard() = with(binding){ // add Observer, this is callback
-        model.liveDataCurrent.observe(viewLifecycleOwner){ // == it ||  item->
+    private fun updateHeaderCurrentCard() = with(binding) { // add Observer, this is callback
+        model.liveDataCurrent.observe(viewLifecycleOwner) { // == it ||  item->
             val minMaxTemper = "${it.temperMin}ºC / ${it.temperMax}ºC"
             tvCardHeadeData.text = it.dataTime
             tvCardHeaderCity.text = it.cityName
-            tvCardHeaderCurrentTemper.text = it.currentTemper+"ºC"
+            tvCardHeaderCurrentTemper.text = it.currentTemper + "ºC"
 
-            if (it.currentTemper!=""){
-                tvCardHeaderCurrentTemper.text = it.currentTemper+"ºC"
+            if (it.currentTemper != "") {
+                tvCardHeaderCurrentTemper.text = it.currentTemper + "ºC"
                 tvCardHeaderTemperMinMax.text = minMaxTemper
-            } else { tvCardHeaderCurrentTemper.text = minMaxTemper
+            } else {
+                tvCardHeaderCurrentTemper.text = minMaxTemper
                 tvCardHeaderTemperMinMax.text = "-"
             }
 
 
             tvCardHeaderCondition.text = it.condition
-            Picasso.get().load("https:"+it.imageURL).into(ivCardHeaderPicture)
+            Picasso.get().load("https:" + it.imageURL).into(ivCardHeaderPicture)
         }
     }
 
@@ -123,6 +156,7 @@ class MainFragment : Fragment() {
         val listDays = parseDaysWeatherData(myObject)
         parseCurrentData(myObject, listDays[0]) // first item in listDays is today
     }
+
     private fun getDataTimeFormat(item: String): String {
         val formatter = DateTimeFormatter.ofPattern("kk:mm")
         return item.format(formatter)
