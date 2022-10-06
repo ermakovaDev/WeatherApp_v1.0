@@ -39,7 +39,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tvDateTime" />
 
         <ImageView
-            android:id="@+id/ivCityImage"
+            android:id="@+id/ivConditionPucture"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:contentDescription="@string/citypicture"
@@ -58,7 +58,7 @@
             android:textColor="@color/white"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/ivCityImage"
+            app:layout_constraintEnd_toStartOf="@+id/ivConditionPucture"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toEndOf="@+id/tvDateTime"
             app:layout_constraintTop_toTopOf="parent" />

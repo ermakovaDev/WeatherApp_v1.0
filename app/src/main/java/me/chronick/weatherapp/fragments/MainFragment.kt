@@ -1,16 +1,17 @@
 package me.chronick.weatherapp.fragments
 
 import android.Manifest
+import android.R.bool
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.activityViewModels
 import com.android.volley.Request
@@ -23,6 +24,7 @@ import me.chronick.weatherapp.adapters.ViewPageAdapter
 import me.chronick.weatherapp.adapters.WeatherModel
 import me.chronick.weatherapp.databinding.FragmentMainBinding
 import org.json.JSONObject
+
 
 const val API_WEATHER_KEY = "a9194f5b279d4301b5c93017220706"
 
@@ -48,6 +50,8 @@ class MainFragment : Fragment() {
         binding = FragmentMainBinding.inflate(inflater, container, false)
         return binding.root
     }
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) { //validate permission
         super.onViewCreated(view, savedInstanceState)
@@ -75,7 +79,6 @@ class MainFragment : Fragment() {
             tvCardHeaderCondition.text = it.condition
             tvCardHeaderTemperMinMax.text = minMaxTemper
             Picasso.get().load("https:"+it.imageURL).into(ivCardHeaderPicture)
-
         }
     }
 
@@ -145,16 +148,6 @@ class MainFragment : Fragment() {
             weatherItem.hoursToDay
         )
         model.liveDataCurrent.value = item
-        Log.d("MyLog", "City: ${item.cityName}")
-        Log.d("MyLog", "Time: ${item.dataTime}")
-        Log.d("MyLog", "Condition: ${item.condition}")
-        Log.d("MyLog", "Temp: ${item.currentTemper}")
-        Log.d("MyLog", "Image URL: ${item.imageURL}")
-        Log.d("MyLog", "Temp min: ${item.temperMin}")
-        Log.d("MyLog", "Temp max: ${item.temperMax}")
-        Log.d("MyLog", "Hours: ${item.hoursToDay}")
-
-
     }
 
     companion object {

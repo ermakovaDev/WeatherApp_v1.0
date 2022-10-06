@@ -1,22 +1,33 @@
 package me.chronick.weatherapp.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import me.chronick.weatherapp.R
 import me.chronick.weatherapp.databinding.ListItemBinding
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 class WeatherAdapter: ListAdapter<WeatherModel, WeatherAdapter.Holder>(Comparator()) {
 
     class Holder(view: View) : RecyclerView.ViewHolder(view){ // creating pattern markup
         private val binding = ListItemBinding.bind(view)
+        @SuppressLint("SetTextI18n")
         fun bind(item: WeatherModel) = with(binding){
-            tvDateTime.text = item.dataTime
+            val current = item.dataTime
+            val formatter = DateTimeFormatter.ofPattern("kk:mm dd/MM/yy", Locale.getDefault())
+            val formatted = current.format(formatter)
+
+            tvDateTime.text = formatted
             tvCondition.text = item.condition
-            tvTemper.text = item.currentTemper
+            tvTemper.text = item.currentTemper+"ºC"
+            Picasso.get().load("https:"+item.imageURL).into(ivConditionPucture)
         }
     }
 
