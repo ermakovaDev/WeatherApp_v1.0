@@ -80,8 +80,6 @@ class MainFragment : Fragment() {
         }
     }
 
-
-
     private fun getLocation() {
         val cancelToken = CancellationTokenSource()
         if (ActivityCompat.checkSelfPermission(
@@ -99,9 +97,6 @@ class MainFragment : Fragment() {
         }
     }
 
-
-
-
     @SuppressLint("SetTextI18n")
     private fun updateHeaderCurrentCard() = with(binding) { // add Observer, this is callback
         model.liveDataCurrent.observe(viewLifecycleOwner) { // == it ||  item->
@@ -118,13 +113,13 @@ class MainFragment : Fragment() {
                 tvCardHeaderTemperMinMax.text = "-"
             }
 
-
             tvCardHeaderCondition.text = it.condition
             Picasso.get().load("https:" + it.imageURL).into(ivCardHeaderPicture)
         }
     }
 
     private fun permissionListener() { // initialize Launcher. gave or did not give permission
+        Log.d("MyLog","permissionListener")
         permissionLauncher =
             registerForActivityResult(ActivityResultContracts.RequestPermission()) {
                 Toast.makeText(activity, "Permission is $it", Toast.LENGTH_LONG).show()
@@ -132,7 +127,8 @@ class MainFragment : Fragment() {
     }
 
     private fun checkPermission() { // checking permission
-        if (isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION)) {
+        Log.d("MyLog","checkP")
+        if (!isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION)) {
             permissionListener()
             permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION) //requesting permission
         }
