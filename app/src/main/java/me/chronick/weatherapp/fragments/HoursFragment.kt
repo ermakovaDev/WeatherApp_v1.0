@@ -7,13 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.ListAdapter
 import me.chronick.weatherapp.MainViewModel
-import me.chronick.weatherapp.R
 import me.chronick.weatherapp.adapters.WeatherAdapter
 import me.chronick.weatherapp.adapters.WeatherModel
 import me.chronick.weatherapp.databinding.FragmentHoursBinding
-import me.chronick.weatherapp.databinding.FragmentMainBinding
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -37,16 +34,16 @@ class HoursFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initRcViewItem()
+        initRCViewItemHours()
         model.liveDataCurrent.observe(viewLifecycleOwner) {
             adapter.submitList(getHoursList(it))
         }
     }
 
-    private fun initRcViewItem() = with(binding) {
-        rcViewItem.layoutManager = LinearLayoutManager(activity)
+    private fun initRCViewItemHours() = with(binding) {
+        rcViewItemHours.layoutManager = LinearLayoutManager(activity)
         adapter = WeatherAdapter()
-        rcViewItem.adapter = adapter
+        rcViewItemHours.adapter = adapter
     }
 
     private fun getHoursList(weatherItem: WeatherModel): List<WeatherModel> {

@@ -133,6 +133,7 @@ class MainFragment : Fragment() {
             )
             listItemDay.add(item)
         }
+        model.liveDataList.value = listItemDay
         return listItemDay
     }
 

@@ -21,12 +21,14 @@ class WeatherAdapter: ListAdapter<WeatherModel, WeatherAdapter.Holder>(Comparato
         @SuppressLint("SetTextI18n")
         fun bind(item: WeatherModel) = with(binding){
             val current = item.dataTime
-            val formatter = DateTimeFormatter.ofPattern("kk:mm dd/MM/yy", Locale.getDefault())
+            val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
             val formatted = current.format(formatter)
 
             tvDateTime.text = formatted
             tvCondition.text = item.condition
-            tvTemper.text = item.currentTemper+"ºC"
+            if (item.currentTemper!=""){
+                tvTemper.text = item.currentTemper+"ºC"
+            } else { tvTemper.text = "${item.temperMin}ºC / ${item.temperMax}ºC" }
             Picasso.get().load("https:"+item.imageURL).into(ivConditionPucture)
         }
     }
