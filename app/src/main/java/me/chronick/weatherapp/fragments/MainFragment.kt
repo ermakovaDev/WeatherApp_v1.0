@@ -34,7 +34,6 @@ import me.chronick.weatherapp.adapters.ViewPageAdapter
 import me.chronick.weatherapp.adapters.WeatherModel
 import me.chronick.weatherapp.databinding.FragmentMainBinding
 import org.json.JSONObject
-import java.time.format.DateTimeFormatter
 
 
 const val API_WEATHER_KEY = "a9194f5b279d4301b5c93017220706"
@@ -88,6 +87,15 @@ class MainFragment : Fragment() {
             tablayoutBody.selectTab(tablayoutBody.getTabAt(0))
             checkLocation()
         }
+        ibCardHeaderSearchIcon.setOnClickListener{
+            DialogManager.searchByCityDialog(requireContext(),object : DialogManager.Listener{
+                override fun onClick(nameCity: String?) {
+                    if (nameCity != null){
+                        requestWeatherData(nameCity)
+                    }
+                }
+            })
+        }
     }
 
     private fun checkLocation(){
@@ -95,7 +103,7 @@ class MainFragment : Fragment() {
             getLocation()
         } else{
             DialogManager.locationSettingsDialog(requireContext(),object :DialogManager.Listener{
-                override fun onClick() {
+                override fun onClick(nameCity: String?) {
                     startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
                 }
             })
