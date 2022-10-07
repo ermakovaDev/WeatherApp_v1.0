@@ -9,7 +9,7 @@ Training project
 4. Alert dialog
 5. Picasso library
 
-#next in line
+# next in line
 1. tests
 2. bookmarks
 3. any UI and UX additions
